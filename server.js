@@ -20,6 +20,7 @@ rollbar.log('Hello world!')
 const students = ['Jimmy', 'Timothy', 'Jimothy']
 
 app.get('/', (req, res) => {
+    rollbar.info('someone loaded up your HTML!')
     res.sendFile(path.join(__dirname, '/index.html'))
 })
 
@@ -37,12 +38,15 @@ app.post('/api/students', (req, res) => {
 
    try {
        if (index === -1 && name !== '') {
-           students.push(name)
-           res.status(200).send(students)
+            rollbar.log('student added successfully', {author: "Carlo", type: "manual entry"});   
+            students.push(name)
+            res.status(200).send(students)
        } else if (name === ''){
-           res.status(400).send('You must enter a name.')
+           rollbar.error("No name provided");
+            res.status(400).send('You must enter a name.')
        } else {
-           res.status(400).send('That student already exists.')
+           rollbar.error("Student already exists");
+            res.status(400).send('That student already exists.')
        }
    } catch (err) {
        console.log(err)
@@ -53,6 +57,7 @@ app.delete('/api/students/:index', (req, res) => {
     const targetIndex = +req.params.index
     
     students.splice(targetIndex, 1)
+    rollbar.info('student was deleted');
     res.status(200).send(students)
 })
 
