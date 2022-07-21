@@ -25,6 +25,12 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/students', (req, res) => {
+    try{
+        doesNotExist()
+    } catch (error){
+        rollbar.info("Uh this function doesn't exist")
+        console.log(error)
+    }
     rollbar.info('someone got the list of students to load')
     res.status(200).send(students)
 })
