@@ -20,17 +20,17 @@ rollbar.log('Hello world!')
 const students = ['Jimmy', 'Timothy', 'Jimothy']
 
 app.get('/', (req, res) => {
-    rollbar.info('someone loaded up your HTML!')
-    res.sendFile(path.join(__dirname, '/index.html'))
-})
-
-app.get('/api/students', (req, res) => {
     try{
         doesNotExist()
     } catch (error){
         rollbar.info("Uh this function doesn't exist")
         console.log(error)
     }
+})
+
+app.get('/api/students', (req, res) => {
+    
+    
     rollbar.info('someone got the list of students to load')
     res.status(200).send(students)
 })
